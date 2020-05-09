@@ -18,9 +18,9 @@ I2C_LS_CONFIG_DEFAULT = 0xc810
 # Configdata for Register "Configuration"
 I2C_LS_CONFIG_CONT_FULL_800MS = 0xcc10
 # Bit 15..12 Automatic Full-Scale Setting Mode
-# Bit 11 Conversion timefield: 800ms# Erzeugen einer I2C-Instanz und Öffnen des Busses Bit
-# 10..9 Mode of conversion: Continuous conversionsbus = smbus.SMBus(1)
-# Bit 4 Latch fieldtime.sleep(1)
+# Bit 11 Conversion timefield: 800ms
+# 10..9 Mode of conversion: Continuous conversions
+# Bit 4 Latch field
 
 bus = smbus.SMBus(1)
 
