@@ -20,8 +20,8 @@
 
 ## Install
 
-sudo apt-get install -y python-smbus
-pip install opt3001
+- sudo apt-get install -y python-smbus
+- pip install opt3001
 
 ## Usage
 
