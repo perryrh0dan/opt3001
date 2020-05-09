@@ -22,7 +22,12 @@ I2C_LS_CONFIG_CONT_FULL_800MS = 0xcc10
 # 10..9 Mode of conversion: Continuous conversions
 # Bit 4 Latch field
 
-bus = smbus.SMBus(1)
+bus = None
+
+
+def init(com=1):
+    global bus
+    bus = smbus.SMBus(com)
 
 
 def read_register_16bit(address, adr):
@@ -146,4 +151,4 @@ def read_lux_float(address):
     mantisse = req_value & 0x0fff
     exponent = (req_value & 0xf000) >> 12
 
-    return 2**exponent * mantisse * 0.01 # mantisse << exponent * 0.01;
+    return 2**exponent * mantisse * 0.01  # mantisse << exponent * 0.01;

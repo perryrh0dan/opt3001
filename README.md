@@ -30,6 +30,8 @@ import opt3001 from opt3001
 
 address = 0x44
 
+opt3001.init() 
+
 # Configure to run in Continuous conversions mode
 opt3001.write_config_req(address, pt3001.I2C_LS_CONFIG_CONT_FULL_800MS)
 
