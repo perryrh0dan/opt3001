@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="opt3001",
-    version="1.0.0",
-    author="Thomas Pöhlmann",
+    version="1.0.2",
+    author="Thomas Poehlmann",
     author_email="thomaspoehlmann96@googlemail.com",
     description="Support library for the light sensor OPT3001 from Texas Instruments",
     long_description=long_description,
