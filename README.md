@@ -14,6 +14,7 @@
 - [Contents](#contents)
 - [Install](#install)
 - [Usage](#usage)
+- [Flight Manual](#flight-manual)
 - [Development](#development)
 - [Team](#team)
 - [License](#license)
@@ -30,13 +31,13 @@ import opt3001 from opt3001
 
 address = 0x44
 
-opt3001.init() 
+opt = opt3001.OPT3001(address) 
 
 # Configure to run in Continuous conversions mode
-opt3001.write_config_req(address, pt3001.I2C_LS_CONFIG_CONT_FULL_800MS)
+opt3001.write_config_reg(opt3001.I2C_LS_CONFIG_CONT_FULL_800MS)
 
 while(True):
-  print(opt3001.read_lux_float(address))
+  print(opt3001.read_lux_float())
   time.sleep(1)
 ```
 
@@ -81,6 +82,20 @@ $ i2cget -y 1 0x44 0x00
 
 0x0b
 ```
+
+## Flight Manual
+
+### Constants
+
+### OPT3001
+
+#### constructor(address, bus = 1)
+
+#### write_config_reg()
+
+#### read_lux_fixpoint()
+
+#### read_lux_float
 
 ## Development
 

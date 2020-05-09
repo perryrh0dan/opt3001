@@ -22,133 +22,121 @@ I2C_LS_CONFIG_CONT_FULL_800MS = 0xcc10
 # 10..9 Mode of conversion: Continuous conversions
 # Bit 4 Latch field
 
-bus = None
 
+class OPT3001:
+    def __init__(self, address, bus=1):
+        """ -----------------------------------------------
+        Name: init
 
-def init(com=1):
-    global bus
-    bus = smbus.SMBus(com)
+        Description:  initiate the opt3001
 
+        Input:  bus - default 1
+                address - i2c address of the opt3001
 
-def read_register_16bit(address, adr):
-    """ -----------------------------------------------
-    Name: read_register_16bit
+        Ausgang: opt3001
+        """
+        self.bus = smbus.SMBus(bus)
+        self.address = address
 
-    Description:  reads a register of the opt3001
+    def read_register_16bit(self, adr):
+        """ -----------------------------------------------
+        Name: read_register_16bit
 
-    Input:  address
-              i2c address of the opt3001
-            adr
-              registeradress to read from
+        Description: reads a register of the opt3001
 
-    Ausgang: data
-    """
-    values = bus.read_i2c_block_data(address, adr, 2)
-    data = (values[0] << 8) | values[1]
-    return data
+        Input:  adr - registeradress to read from
 
+        Ausgang: data
+        """
+        values = self.bus.read_i2c_block_data(self.address, adr, 2)
+        data = (values[0] << 8) | values[1]
+        return data
 
-def write_register_16bit(address, adr, data):
-    """ -----------------------------------------------
-    Name: write_register_16bit
+    def write_register_16bit(self, adr, data):
+        """ -----------------------------------------------
+        Name: write_register_16bit
 
-    Description:  write to a register of the opt3001
+        Description:  write to a register of the opt3001
 
-    Input:  address
-              i2c address of the opt3001
-            adr
-              registeradress to write to
-            data
-              data to write to register
+        Input:  adr - registeradress to write to
+                data - data to write to register
 
-    Ausgang: void
-    """
-    d1 = (data >> 8)
-    d0 = data & 0xFF
-    return bus.write_i2c_block_data(address, adr, [d1, d0])
+        Ausgang: void
+        """
+        d1 = (data >> 8)
+        d0 = data & 0xFF
+        return self.bus.write_i2c_block_data(self.address, adr, [d1, d0])
 
+    def write_config_reg(self, data):
+        """ -----------------------------------------------
+        Name: write_config_req
 
-def write_config_reg(address, data):
-    """ -----------------------------------------------
-    Name: write_config_req
+        Description:  write to config register
 
-    Description:  write to config register
+        Input:  data - data to write to register
 
-    Input:  address
-              i2c address of the opt3001
-            data
-              data to write to register
+        Ausgang: void
+        """
+        return self.write_register_16bit(I2C_LS_REG_CONFIG, data)
 
-    Ausgang: void
-    """
-    return write_register_16bit(address, I2C_LS_REG_CONFIG, data)
+    def read_manufacture_id(self):
+        """ -----------------------------------------------
+        Name: read_manufacture_id
 
+        Description:  read manufacture id of the opt3001
 
-def read_manufacture_id(address):
-    """ -----------------------------------------------
-    Name: read_manufacture_id
+        Input: void
 
-    Description:  read manufacture id of the opt3001
+        Ausgang: manufacture id
+        """
+        return self.read_register_16bit(I2C_LS_REG_MANUFACTURERID)
 
-    Input:  address
-              i2c address of the opt3001
+    def read_device_id(self):
+        """ -----------------------------------------------
+        Name: read_device_id
 
-    Ausgang: manufacture id
-    """
-    return read_register_16bit(address, I2C_LS_REG_MANUFACTURERID)
+        Description:  read device id of the opt3001
 
+        Input: void
 
-def read_device_id(address):
-    """ -----------------------------------------------
-    Name: read_device_id
+        Ausgang: manufacture id
+        """
+        return self.read_register_16bit(I2C_LS_REG_DEVICEID)
 
-    Description:  read device id of the opt3001
+    def read_lux_fixpoint(self):
+        """ -----------------------------------------------
+        Name: read_lux_fixpoint
 
-    Input:  address
-              i2c address of the opt3001
+        Description:  read the brightness of the opt3001 with two fixed decimal places
 
-    Ausgang: manufacture id
-    """
-    return read_register_16bit(address, I2C_LS_REG_DEVICEID)
+        Input:  void
 
+        Ausgang: manufacture id
+        """
+        # Register Value
+        req_value = self.read_register_16bit(I2C_LS_REG_RESULT)
 
-def read_lux_fixpoint(address):
-    """ -----------------------------------------------
-    Name: read_lux_fixpoint
+        # Convert to LUX
+        mantisse = req_value & 0x0fff
+        exponent = (req_value & 0xf000) >> 12
 
-    Description:  read the brightness of the opt3001 with two fixed decimal places
+        return 2**exponent * mantisse  # mantisse << exponent;
 
-    Input:  address
-              i2c address of the opt3001
+    def read_lux_float(self):
+        """ -----------------------------------------------
+        Name: read_lux_float
 
-    Ausgang: manufacture id
-    """
-    # Register Value
-    req_value = read_register_16bit(address, I2C_LS_REG_RESULT)
+        Description:  read the brightness of the opt3001 as float
 
-    # Convert to LUX
-    mantisse = req_value & 0x0fff
-    exponent = (req_value & 0xf000) >> 12
+        Input:  void
 
-    return 2**exponent * mantisse  # mantisse << exponent;
+        Ausgang: manufacture id
+        """
+        # Register Value
+        req_value = self.read_register_16bit(I2C_LS_REG_RESULT)
 
+        # Convert to LUX
+        mantisse = req_value & 0x0fff
+        exponent = (req_value & 0xf000) >> 12
 
-def read_lux_float(address):
-    """ -----------------------------------------------
-    Name: read_lux_float
-
-    Description:  read the brightness of the opt3001 as float
-
-    Input:  address
-              i2c address of the opt3001
-
-    Ausgang: manufacture id
-    """
-    # Register Value
-    req_value = read_register_16bit(address, I2C_LS_REG_RESULT)
-
-    # Convert to LUX
-    mantisse = req_value & 0x0fff
-    exponent = (req_value & 0xf000) >> 12
-
-    return 2**exponent * mantisse * 0.01  # mantisse << exponent * 0.01;
+        return 2**exponent * mantisse * 0.01  # mantisse << exponent * 0.01;
