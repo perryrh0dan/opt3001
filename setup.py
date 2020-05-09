@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="opt3001",
-    version="0.0.2",
+    version="1.0.0",
     author="Thomas Pöhlmann",
     author_email="thomaspoehlmann96@googlemail.com",
     description="Support library for the light sensor OPT3001 from Texas Instruments",
@@ -18,4 +18,4 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-) 
+)
