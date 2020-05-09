@@ -34,10 +34,10 @@ address = 0x44
 opt = opt3001.OPT3001(address) 
 
 # Configure to run in Continuous conversions mode
-opt3001.write_config_reg(opt3001.I2C_LS_CONFIG_CONT_FULL_800MS)
+opt.write_config_reg(opt3001.I2C_LS_CONFIG_CONT_FULL_800MS)
 
 while(True):
-  print(opt3001.read_lux_float())
+  print(opt.read_lux_float())
   time.sleep(1)
 ```
 
