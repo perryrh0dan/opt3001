@@ -30,8 +30,8 @@ class OPT3001:
 
         Description:  initiate the opt3001
 
-        Input:  bus - default 1
-                address - i2c address of the opt3001
+        Input:  address - i2c address of the opt3001
+                bus - default 1
 
         Ausgang: opt3001
         """

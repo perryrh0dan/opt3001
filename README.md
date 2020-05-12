@@ -87,15 +87,60 @@ $ i2cget -y 1 0x44 0x00
 
 ### Constants
 
+| constant | description | value |
+| --- | --- | --- |
+| I2C_LS_CONFIG_DEFAULT | OPT3001 default settings  | 0xc810 |
+| I2C_LS_CONFIG_CONT_FULL_800MS | settings for continuous measurement | 0xcc10 |
+| I2C_LS_REG_RESULT | Result Register | 0x00 |
+| I2C_LS_REG_CONFIG | Configuration Register | 0x01 |
+| I2C_LS_REG_LOWLIMIT | Low Limit Register | 0x02 |
+| I2C_LS_REG_HIGHLIMIT | High Limit Register | 0x03 |
+| I2C_LS_REG_MANUFACTURERID | Manufacturer ID | 0x7E |
+| I2C_LS_REG_DEVICEID | Device ID Register | 0x7F |
+
+
 ### OPT3001
 
-#### constructor(address, bus = 1)
+#### constructor
 
-#### write_config_reg()
+Input:
+- address - i2c address of the opt3001
+- bus - default 1
 
-#### read_lux_fixpoint()
+#### read_lux_fixpoint
+
+Read the brightness of the opt3001 with two fixed decimal places
 
 #### read_lux_float
+
+Read the brightness of the opt3001 as float
+
+#### read_manufacture_id
+
+Read manufacture id of the opt3001
+
+#### read_device_id
+
+Read device id of the opt3001
+
+#### write_config_reg
+
+Write data to config register
+
+Input:
+- data - configuration data to write to registry
+
+#### read_register_16bit
+
+reads a register of the opt3001
+
+#### write_register_16bit
+
+Write to a register of the opt3001
+
+Input:
+- adr - registeradress to write to
+- data - 16bit data to write to registry
 
 ## Development
 
